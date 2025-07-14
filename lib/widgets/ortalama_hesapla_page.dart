@@ -3,6 +3,8 @@ import 'package:not_hesaplama/constants/sabitler.dart';
 import 'package:not_hesaplama/helper/data_helper.dart';
 import 'package:not_hesaplama/model/ders.dart';
 import 'package:not_hesaplama/widgets/ders_listesi.dart';
+import 'package:not_hesaplama/widgets/harf_dropdown_widget.dart';
+import 'package:not_hesaplama/widgets/kredi_dropdown_widget.dart';
 import 'package:not_hesaplama/widgets/ortalama_goster.dart';
 
 class OrtalamaHesaplaPage extends StatefulWidget {
@@ -22,6 +24,7 @@ class _OrtalamaHesaplaPageState extends State<OrtalamaHesaplaPage> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("ana build çalıştı");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -69,10 +72,18 @@ class _OrtalamaHesaplaPageState extends State<OrtalamaHesaplaPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              // harf dropdownbutton
-              _buildHarfler(),
+              // harf dropdownbutton widget eklendi, _buildHarfler silindi
+              HarfDropdownWidget(
+                onSelectedHarf: (value) {
+                  secilenHarfDegeri = value;
+                },
+              ),
               // kredi dropdown
-              _buildKrediler(),
+              KrediDropdownWidget(
+                onSelectedKredi: (value) {
+                  secilenKrediDegeri = value;
+                },
+              ),
               // iconbutton
               IconButton(
                 onPressed: () {
@@ -106,64 +117,6 @@ class _OrtalamaHesaplaPageState extends State<OrtalamaHesaplaPage> {
           border: OutlineInputBorder(borderRadius: Sabitler.borderRadius),
           filled: true,
           fillColor: Sabitler.anaRenk.shade50,
-        ),
-      ),
-    );
-  }
-
-  _buildHarfler() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Container(
-          padding: Sabitler.dropDownPadding,
-          decoration: BoxDecoration(
-            color: Sabitler.anaRenk.shade50,
-            borderRadius: Sabitler.borderRadius,
-          ),
-          child: DropdownButton(
-            elevation: 16,
-            iconEnabledColor: Sabitler.anaRenk.shade300,
-            focusColor: Colors.transparent,
-            underline: Container(),
-            value: secilenHarfDegeri,
-            // itemslar datahelper'dan geliyor.
-            items: DataHelper.dropDownMenuBilgisi(),
-            onChanged: (e) {
-              setState(() {
-                secilenHarfDegeri = e!;
-              });
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  _buildKrediler() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
-        child: Container(
-          padding: Sabitler.dropDownPadding,
-          decoration: BoxDecoration(
-            color: Sabitler.anaRenk.shade50,
-            borderRadius: Sabitler.borderRadius,
-          ),
-          child: DropdownButton(
-            elevation: 16,
-            iconEnabledColor: Sabitler.anaRenk.shade300,
-            focusColor: Colors.transparent,
-            underline: Container(),
-            value: secilenKrediDegeri,
-            // itemslar dataHelper'dan geliyor.
-            items: DataHelper.dropDownKrediBilgisi(),
-            onChanged: (e) {
-              setState(() {
-                secilenKrediDegeri = e!;
-              });
-            },
-          ),
         ),
       ),
     );
